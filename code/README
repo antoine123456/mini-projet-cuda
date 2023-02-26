@@ -1,0 +1,50 @@
+# Introduction
+> In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image. (previously used)
+
+> The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. The index of the output pixel is calculated by subtracting the current i value from the width of the image.
+
+> The example assumes the image is in RGB format, so each pixel is represented by 3 values (one for each of the red, green, blue).
+
+> I failed to insall nvcc on my machine and the clusted was to slow thus i managed to use google colab's nvcc with a 3x3 image to test my kernels.
+
+## === q6 ===
+
+>In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image. color is the index of the color channel to be saturated (0 for red, 1 for green, and 2 for blue), and saturationFactor is a float value that specifies the amount of saturation to apply (1.0f means no change, greater than 1.0f means increase saturation, and less than 1.0f means decrease saturation).
+
+>The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. The output pixel is calculated by first converting the input pixel to a floating-point value, then multiplying it by the saturation factor, and finally converting it back to an 8-bit integer value. The other color channels are simply copied from the input image to the output image.
+
+## === q8 ===
+
+>In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image.
+
+>The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. The output pixel is calculated by first averaging the values of its four neighbors (left, right, top, and bottom), and then storing the result in the output image. The conditions in the if statements ensure that the thread only accesses valid pixels and doesn't go out of bounds.
+
+## === q9 ===
+
+>In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image.
+
+>The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. The output pixel is calculated by first converting the red, green, and blue values of the corresponding input pixel to greyscale, using the formula .299 * red + .587 * green + .114 * blue, and then storing the result in the output image. The conditions in the if statements ensure that the thread only accesses valid pixels and doesn't go out of bounds.
+
+## === q.10 ===
+
+>In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image.
+
+>The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. For pixels that are within the bounds of the image, the Sobel filter is applied to find the gradient magnitude and the corresponding output pixel is either set to the gradient magnitude (if it's above a certain threshold) or the original intensity (if it's below the threshold). For pixels that are on the border of the image, the output pixel is set to 255 (white). The conditions in the if statements ensure that the thread only accesses valid pixels and doesn't go out of bounds.
+
+## === q12 ===
+
+>In this example, inputImage and outputImage are the input and output arrays that represent the image. width and height are the dimensions of the image.
+
+>The kernel uses a 2D grid of threads, where each thread computes one pixel of the output image. The current thread index is computed based on the block and thread indices, and the output image is divided into 4 sub-images. For each sub-image, the appropriate color channel is saturated and the corresponding output pixel is set to that value. For the greyscale sub-image, the corresponding output pixels are set to the greyscale intensity. The conditions in the if statement ensure that the thread only accesses valid pixels and doesn't go out of bounds.
+
+## === q 13 ===
+
+> This code appears to be efficient in that it is using a 2D grid of threads to compute each pixel of the output image. This allows for parallel processing, which can improve performance. 
+
+> To improve the efficiency of this code, we could consider using a larger block size for the threads, as this could reduce the amount of time spent synchronizing the threads. Additionally, we could look into using shared memory to store the input image, as this could reduce the amount of time spent accessing global memory
+
+## === q 14 ===
+
+>In this example, the same transformation is performed but using 4 separate streams, one for each sub-image. This can allow for more parallelism and better performance, as the kernel can perform multiple memory transfers and operations in parallel, rather than sequentially.
+
+>Each stream is created using cudaStreamCreateWithFlags and the asynchronous memory transfer and set operations are performed using the cudaMemcpyAsync and cudaMemsetAsync functions, respectively. The stream is specified as the last argument for each of these functions, so that the operations are performed in the appropriate stream.
